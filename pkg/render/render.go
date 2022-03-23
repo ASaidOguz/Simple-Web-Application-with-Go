@@ -7,28 +7,32 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/ASaidOguz/Simple-Web-App/pkg/config"
 )
 
 var functions = template.FuncMap{}
+var app *config.AppConfig
+
+func NewTemplate(a *config.AppConfig) {
+	app = a
+}
 
 // RenderTemplates renders templates using html/template
 func RenderTemplates(w http.ResponseWriter, html string) {
-
-	tc, err := CreateTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Get the template cache from App config .
+	tc := app.TemplateCache
 
 	t, ok := tc[html]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal("couldnt get template from template cache!")
 	}
 
 	buf := new(bytes.Buffer)
 
 	_ = t.Execute(buf, nil)
 
-	_, err = buf.WriteTo(w)
+	_, err := buf.WriteTo(w)
 	if err != nil {
 		fmt.Println("Error in writing browser")
 

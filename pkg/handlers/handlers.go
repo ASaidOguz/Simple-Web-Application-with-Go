@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ASaidOguz/Simple-Web-App/pkg/config"
+	"github.com/ASaidOguz/Simple-Web-App/pkg/models"
 	"github.com/ASaidOguz/Simple-Web-App/pkg/render"
 )
 
@@ -29,11 +30,17 @@ func Newhandlers(r *Repository) {
 
 // Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, "home.page.html")
+	render.RenderTemplates(w, "home.page.html", &models.TemplateData{})
 
 }
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, "about.page.html")
+
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hello World AGAIN ♥"
+
+	render.RenderTemplates(w, "about.page.html", &models.TemplateData{
+		StringMap: stringMap,
+	})
 }

@@ -23,10 +23,18 @@ func main() {
 	}
 
 	app.TemplateCache = tc
+
+	//UseCache if its true its in production mode-if false its in development mode
+	//which we will create template everytime
+	app.UseCache = false
+
+	repo := handlers.NewRepo(&app)
+	handlers.Newhandlers(repo)
+
 	render.NewTemplate(&app)
 
-	http.HandleFunc("/", handlers.Home)
-	http.HandleFunc("/about", handlers.About)
+	http.HandleFunc("/", handlers.Repo.Home)
+	http.HandleFunc("/about", handlers.Repo.About)
 	fmt.Println(fmt.Sprintf("Application starts at :%s", PORTNUMBER))
 	_ = http.ListenAndServe(PORTNUMBER, nil)
 }

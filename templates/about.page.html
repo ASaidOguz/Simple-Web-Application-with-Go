@@ -9,6 +9,14 @@
             <p>This is some text for about page so read it would you kindly</p>
             <p>Where are you mama ? ♥</p>
             <p>This came from struct: {{index .StringMap "test"}}</p>
+            <p>
+                 {{if ne (index .StringMap "remote_ip") ""}}
+                        Your remote IP address is : {{index .StringMap "remote_ip"}}
+                 {{else}}
+                        I dont know your IP address please visit the <a href="/">Home Page</a>
+                         So I can set it up for ya.
+                 {{end}}
+            </p>
         </div>
     </div>
 </div>

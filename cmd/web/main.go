@@ -4,18 +4,32 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/ASaidOguz/Simple-Web-App/pkg/config"
 	"github.com/ASaidOguz/Simple-Web-App/pkg/handlers"
 	"github.com/ASaidOguz/Simple-Web-App/pkg/render"
+	"github.com/alexedwards/scs/v2"
 )
 
 const PORTNUMBER = ":8080"
 
+var app config.AppConfig
+var session *scs.SessionManager
+
 // main is the main application where all things begin ^ı^
 func main() {
 
-	var app config.AppConfig
+	app.InProduction = false
+
+	//session we r intializing alexedwards session packages here
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = false
+
+	app.Session = session
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
